@@ -17,7 +17,7 @@ int main(){
     
     try{
         COM curl_interface(url,file_name );
-        //curl_interface.send_msg();
+        curl_interface.send_msg();
     }
     catch(curl_exception & e){
         std::cout << e.what();

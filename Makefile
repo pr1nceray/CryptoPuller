@@ -35,7 +35,7 @@ SOURCES     := $(filter-out $(TESTSOURCES), $(SOURCES))
 OBJECTS     = $(SOURCES:%.cpp=%.o)
 
 # Default Flags
-CXXFLAGS = -std=c++17 -Wconversion -Wall -Werror -Wextra -pedantic -lcurl -ljsoncpp
+CXXFLAGS = -std=c++17 -Wconversion -Wall -Werror -Wextra -lcurl -ljsoncpp -pedantic
 
 # make debug - will compile sources with $(CXXFLAGS) -g3 and -fsanitize
 #              flags also defines DEBUG and _GLIBCXX_DEBUG

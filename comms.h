@@ -1,5 +1,3 @@
-#include <cstddef>
-#include <cstdio>
 #include <curl/curl.h>
 #include <curl/easy.h>
 #include <jsoncpp/json/json.h>
@@ -7,7 +5,6 @@
 #include "string.h"
 #include <jsoncpp/json/reader.h>
 #include <jsoncpp/json/value.h>
-#include <new>
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -67,6 +64,8 @@ class COM{
     }
     ~COM(){
         curl_easy_cleanup(curl);
+        curl_slist_free_all(list);
+        file.close();
     }
 
 

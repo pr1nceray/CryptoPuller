@@ -4,7 +4,7 @@
         "name": "(lldb) Launch",
         "type": "lldb",
         "request": "launch",
-        "program": "${workspaceFolder}/trader_debug",
+        "program": "${workspaceFolder}/crypto_debug",
         "cwd": "${workspaceFolder}/",
         "stdio": [
         ]
