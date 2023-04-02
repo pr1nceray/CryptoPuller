@@ -9,18 +9,7 @@
 
 using namespace std;
 
-/*
-int main(){
 
-    Json::Value val;
-    string temp;
-    cin >> temp;
-    Json::Reader read;
-    bool is_parsed = read.parse(temp,val);
-    std::cout << val.toStyledString();
-    (void) is_parsed;
-}
-*/
 
 int main(){
     string url = "https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/listings/latest";
@@ -28,7 +17,7 @@ int main(){
     
     try{
         COM curl_interface(url,file_name );
-        curl_interface.send_msg();
+        //curl_interface.send_msg();
     }
     catch(curl_exception & e){
         std::cout << e.what();

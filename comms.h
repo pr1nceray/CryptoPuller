@@ -35,18 +35,28 @@ class curl_exception : public exception{
 
     size_t write_file_class(void* data, size_t sz, size_t nmemb, string * userp){
         size_t r_sz = sz * nmemb;
-        *userp = ((char *)data); //set userp (buffer) to data
+        (*userp) = (string)((char *)data); 
         return r_sz;
     }
 
 
 class COM{
     public:
-
+    /*
+    
+    Initializes curl, and sets up options.
+    Header data is set_header(), while options are in set_opts()
+    File handling is done in init_file().
+    
+    */
     COM(string & url, string & file_name){
         curl_global_init(CURL_GLOBAL_ALL);
         curl = curl_easy_init();
-        if(!curl){ //need to throw error here tbh.
+        (void)url;
+        (void)file_name;
+
+        
+        if(!curl){ 
             curl_exception init_err("Error during curl initialization; curl not initialized");
             throw init_err;
             return;
@@ -55,11 +65,10 @@ class COM{
         set_up_opts(url);
         set_header();
     }
-
-
     ~COM(){
         curl_easy_cleanup(curl);
     }
+
 
     void send_msg(){
         CURLcode code = curl_easy_perform(curl);
@@ -70,32 +79,38 @@ class COM{
         buffer.clear();
     }   
 
-    void set_header(){ //eeds more header data,.
-        list = curl_slist_append(list, "Accept: application/json");
-        list = curl_slist_append(list, "X-CMC_PRO_API_KEY: b54bcf4d-1bca-4e8e-9a24-22ff2c3d462c");
-        curl_easy_setopt(curl, CURLOPT_HTTPHEADER,list);
-    }
-
     private:
     CURL * curl = nullptr;
+    curl_slist * list = nullptr;
     ofstream file;
     string buffer = "";
-    string json_unparsed;
-    curl_slist * list = nullptr;
-    Json::Reader read;
 
 
 
     void parse_json(string & buffer){
-           Json::Value val;
-            bool is_parsed = read.parse(buffer,val);
-            if(!is_parsed){
-                throw curl_exception("Unable to turn get req into a string");
-                return;
-            }
-        std::cout << val.toStyledString();
+        Json::Reader read;
+        Json::Value val;
+        bool is_parsed = read.parse(buffer,val);
+        if(!is_parsed){
+            throw curl_exception("Unable to turn get req into a string");
+            return;
+        }
+        file << val.toStyledString();
     }
 
+    void set_header(){ //needs more header data,.
+        list = curl_slist_append(list, "Accept: application/json");
+        if(list == nullptr){
+            throw curl_exception("Error during setting our header");
+            return;
+        }
+        list = curl_slist_append(list, "X-CMC_PRO_API_KEY: b54bcf4d-1bca-4e8e-9a24-22ff2c3d462c"); //sandbox key ;)
+        if(list == nullptr){
+            throw curl_exception("Error during setting our key");
+            return;
+        }
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER,list);
+    }
 
     void set_up_opts(string & url){
         curl_easy_setopt(curl,CURLOPT_VERBOSE,true);
