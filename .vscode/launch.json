@@ -6,6 +6,7 @@
         "request": "launch",
         "program": "${workspaceFolder}/crypto_debug",
         "cwd": "${workspaceFolder}/",
+        "args": ["-v"],
         "stdio": [
         ]
     

@@ -83,12 +83,12 @@ class COM{
     curl_slist * list = nullptr;
     ofstream file;
     string buffer = "";
+    Json::Reader read;
+    Json::Value val;
 
 
 
     void parse_json(string & buffer){
-        Json::Reader read;
-        Json::Value val;
         bool is_parsed = read.parse(buffer,val);
         if(!is_parsed){
             throw curl_exception("Unable to turn get req into a string");
@@ -112,7 +112,7 @@ class COM{
     }
 
     void set_up_opts(string & url){
-        curl_easy_setopt(curl,CURLOPT_VERBOSE,true);
+        //curl_easy_setopt(curl,CURLOPT_VERBOSE,true);
         curl_easy_setopt(curl,CURLOPT_WRITEDATA,&buffer);  
         curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,write_file_class);  
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str()); 

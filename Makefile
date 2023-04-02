@@ -115,7 +115,7 @@ alltests: $(TESTS)
 
 # make clean - remove .o files, executables, tarball
 clean:
-	rm -Rf *.dSYM *.debug *.exe *.out
+	rm -Rf *.dSYM *.debug *.exe *.out *.json
 	rm -f $(OBJECTS) $(EXECUTABLE) $(EXECUTABLE)_debug
 	rm -f $(EXECUTABLE)_valgrind $(EXECUTABLE)_profile $(TESTS) perf.data* \
       $(PARTIAL_SUBMITFILE) $(FULL_SUBMITFILE) $(UNGRADED_SUBMITFILE)
