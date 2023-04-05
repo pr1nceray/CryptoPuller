@@ -1,0 +1,13 @@
+TODO:
+    Things in this file i need to complete.
+
+Make a 'logging' option
+    if enabled, then the json will be saved. if not enabled, then only summary will be saved.
+
+Make comms grab map :
+    Upon initialization of comms.h, do an initial grab of id to coin name. this will be useful to the user when your reader works
+
+make reader work:
+    reader currently blocks the thread. need to figure out a way around this.
+
+    
