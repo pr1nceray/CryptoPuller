@@ -1,14 +1,13 @@
+#include <cctype>
+#include <cstdio>
 #include <iostream>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 //made for easier input /output opts
 
-struct user_opt{
-    bool is_verbose = false;
-    int update_timeframe = 300;
 
-};
 
 enum class input_opts{
     BUY,
@@ -18,9 +17,16 @@ enum class input_opts{
     QUIT
 };
 
+
+struct user_opt{
+    bool is_verbose = false;
+    int update_timeframe = 300;
+
+};
+
 class reader{
     public:
-    reader(user_opt & opt_in):is_verbose(opt_in.is_verbose),cur_input(""),opt(opt_in){
+    reader(user_opt & opt_in):is_verbose(opt_in.is_verbose),opt(opt_in){
         if(!opt.is_verbose){
             return;
         }
@@ -34,32 +40,36 @@ class reader{
         std::cout << "UPDATE <interval> - changes how often you would like to see updates on the price of the coin. minimum of one minute\n";
     }
 
-    input_opts read_message(){
+    static input_opts read_message(){
+        string cur_input;
         cin >> cur_input;
+        //should also do lower case opts.
         switch (cur_input.at(0)) {
-            case 'B' :{
+            case 'B'  | 'b':{
                 return input_opts::BUY;
                 break; 
             }
-            case 'S' :{
+            case 'S' | 's' :{
                 return input_opts::SELL;
                 break; 
             }
-            case 'U' :{
+            case 'U'  | 'u':{
                 return input_opts::UPDATE;
                 break; 
             }
-            case 'I':{
+            case 'I' | 'i':{
                 return input_opts::INFO;
                 break;
             }
-            case 'Q':{
+            case 'Q' | 'q':{
                 return  input_opts::QUIT;
                 break;
             }
             default:{
                 std::cout << "unknown option; quiting.\n";
+                getline(cin, cur_input);
                 return input_opts::QUIT;
+                break;
             }
 
         }
@@ -81,9 +91,11 @@ class reader{
         std::cout << "Updated time interval to update on to" <<  time_frame << "\n";
     }
 
+    
+
 
     bool is_verbose;
-    string cur_input;
+    //string cur_input;
     user_opt & opt;
 
 };

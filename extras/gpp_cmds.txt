@@ -1,1 +1,1 @@
-$ g++ trader.cpp comms.h -lcurl -ljsoncpp -Wall -g -o 'trader_debug'
+g++ trader.cpp comms.h reader.h clock.h -lcurl -ljsoncpp -Wall -g -o 'crypto_debug'

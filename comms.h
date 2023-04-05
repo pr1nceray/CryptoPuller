@@ -5,6 +5,7 @@
 #include "string.h"
 #include <jsoncpp/json/reader.h>
 #include <jsoncpp/json/value.h>
+
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -112,7 +113,7 @@ class COM{
     }
 
     void set_up_opts(string & url){
-        //curl_easy_setopt(curl,CURLOPT_VERBOSE,true);
+        curl_easy_setopt(curl,CURLOPT_VERBOSE,true);
         curl_easy_setopt(curl,CURLOPT_WRITEDATA,&buffer);  
         curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,write_file_class);  
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str()); 
