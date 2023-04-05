@@ -48,7 +48,8 @@ class COM{
     File handling is done in init_file().
     
     */
-    COM(string & url, string & file_name_in, string & api_key_in){
+
+    COM(string & url, string & file_name_in, string & api_key_in) : base_url(url), api_key(api_key_in),file_name(file_name_in){
         curl_global_init(CURL_GLOBAL_ALL);
         curl = curl_easy_init();
         if(!curl){ 
@@ -56,11 +57,7 @@ class COM{
             throw init_err;
             return;
         }
-        set_up_opts(url);
-        //should switch to member initialization list.
-        base_url = url;
-        file_name = file_name_in;
-        api_key = api_key_in;
+        set_up_opts();
     }
 
     ~COM(){
@@ -70,18 +67,16 @@ class COM{
 
     //message with sandbox api key.
     void send_test_msg(){
-        string next_url = base_url + "/v1/cryptocurrency/listings/latest";
-        curl_easy_setopt(curl, CURLOPT_URL, next_url.c_str()); 
-
         curl_slist * list = nullptr;
         set_test_header(list);
+        
         CURLcode code = curl_easy_perform(curl);
-
         if(code != CURLE_OK){
             cout << "Error getting info.";
             curl_slist_free_all(list);
             return;
         }
+
         curl_slist_free_all(list);
 
         parse_json(buffer);
@@ -96,8 +91,8 @@ class COM{
     void send_msg(){
         curl_slist * list = nullptr;
         set_xmr(list);
-        CURLcode code = curl_easy_perform(curl);
 
+        CURLcode code = curl_easy_perform(curl);
         if(code != CURLE_OK){
             cout << "Error getting info.";
             curl_slist_free_all(list);
@@ -136,28 +131,31 @@ class COM{
         }
     }
 
-    void set_test_header(curl_slist * list){ //needs more header data,.
-        //need better error handling if append fails!
-        string api_key_temp = "X-CMC_PRO_API_KEY: " + api_key;
-        list = curl_slist_append(list, "Accept: application/json");
-        list = curl_slist_append(list, api_key_temp.c_str());
-
-        if(list == nullptr){
-            throw curl_exception("Error during setting our key");
-            return;
-        }
-        curl_easy_setopt(curl, CURLOPT_HTTPHEADER,list);
+    void set_test_header(curl_slist *& list){ //needs more header data,.
+        set_basic_headers(list);
+        string next_url = base_url + "/v1/cryptocurrency/listings/latest";
+        curl_easy_setopt(curl, CURLOPT_URL, next_url.c_str()); 
     }
 
-    void set_xmr(curl_slist * list){
-        list = curl_slist_append(list, "Accept: application/json");
-        list = curl_slist_append(list, "Accept-Encoding: deflate, gzip ");
-        string next_url = base_url + "/v2/cryptocurrency/quotes/latest";
-        next_url += "/items?id=1";//get bitcoin got now!
+    void set_xmr(curl_slist *& list){
+        set_basic_headers(list);
+        //string next_url = base_url + "/v2/cryptocurrency/quotes/latest" + "?id=1"; //grabs bitcoin via id
+        string next_url = base_url + "/v2/cryptocurrency/quotes/latest" + "?slug=monero,bitcoin,ethereum";
         curl_easy_setopt(curl, CURLOPT_URL,next_url.c_str()); 
     }   
 
-    void set_up_opts(string & url){
+    void set_basic_headers(curl_slist *& list){
+        string api_key_temp = "X-CMC_PRO_API_KEY: " + api_key;
+        list = curl_slist_append(list, "Accept: application/json");
+        list = curl_slist_append(list, api_key_temp.c_str());
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER,list);
+        if(list == nullptr){
+            throw curl_exception("Error during setting up headers");
+            return;
+        }
+    }
+
+    void set_up_opts(){
         curl_easy_setopt(curl,CURLOPT_VERBOSE,true);
         curl_easy_setopt(curl,CURLOPT_WRITEDATA,&buffer);  
         curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,write_file_class);  

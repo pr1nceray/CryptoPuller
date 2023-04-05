@@ -1,0 +1,161 @@
+{
+	"data" : 
+	{
+		"bitcoin" : 
+		{
+			"circulating_supply" : 2522,
+			"cmc_rank" : 3665,
+			"date_added" : "2023-04-05T22:51:05.509Z",
+			"id" : 3729,
+			"is_active" : 1817,
+			"is_fiat" : null,
+			"last_updated" : "2023-04-05T22:51:05.509Z",
+			"max_supply" : 3872,
+			"name" : "akdkb0sjx6",
+			"num_market_pairs" : 185,
+			"platform" : null,
+			"quote" : 
+			{
+				"USD" : 
+				{
+					"fully_diluted_market_cap" : 0.90279081384294346,
+					"last_updated" : "2023-04-05T22:51:05.509Z",
+					"market_cap" : 0.78504232365519067,
+					"market_cap_dominance" : 691,
+					"percent_change_1h" : 0.99027972921860585,
+					"percent_change_24h" : 0.82108057341593343,
+					"percent_change_30d" : 0.80371204566341214,
+					"percent_change_7d" : 0.32887655287409112,
+					"price" : 0.27709639446359602,
+					"volume_24h" : 0.7123228260128025,
+					"volume_change_24h" : 0.24476871551509349
+				}
+			},
+			"self_reported_circulating_supply" : null,
+			"self_reported_market_cap" : null,
+			"slug" : "bitcoin",
+			"symbol" : "rmr07th8d3",
+			"tags" : 
+			[
+				"ox0ernzfsr",
+				"ret6fncvuw",
+				"9buh3i2kty",
+				"iakw9n4aft",
+				"bmuzrxduyhi",
+				"p5vh7w1noi",
+				"ev6meg6ofz4",
+				"i2b890ugif8",
+				"ahykei1fv1o",
+				"0liy0yxkqykc"
+			],
+			"total_supply" : 3077
+		},
+		"ethereum" : 
+		{
+			"circulating_supply" : 3218,
+			"cmc_rank" : 2876,
+			"date_added" : "2023-04-05T22:51:05.509Z",
+			"id" : 4590,
+			"is_active" : 1438,
+			"is_fiat" : null,
+			"last_updated" : "2023-04-05T22:51:05.509Z",
+			"max_supply" : 9851,
+			"name" : "baev7u1a5sq",
+			"num_market_pairs" : 5847,
+			"platform" : null,
+			"quote" : 
+			{
+				"USD" : 
+				{
+					"fully_diluted_market_cap" : 0.35591081228336097,
+					"last_updated" : "2023-04-05T22:51:05.509Z",
+					"market_cap" : 0.63378347443006966,
+					"market_cap_dominance" : 6900,
+					"percent_change_1h" : 0.33725304082888208,
+					"percent_change_24h" : 0.16913998912022676,
+					"percent_change_30d" : 0.60174996721100493,
+					"percent_change_7d" : 0.15438298630657976,
+					"price" : 0.70313404439605787,
+					"volume_24h" : 0.71088278393721249,
+					"volume_change_24h" : 0.42872839246019856
+				}
+			},
+			"self_reported_circulating_supply" : null,
+			"self_reported_market_cap" : null,
+			"slug" : "ethereum",
+			"symbol" : "gthvjagssld",
+			"tags" : 
+			[
+				"mvp94kbj5wp",
+				"3rtapmhuip4",
+				"o8k62871zvm",
+				"5aqqxgiyz7f",
+				"59fm19x1kcf",
+				"1j03088757w",
+				"05el4y1mh5ve",
+				"3rhggeaxxxt",
+				"etogdtfukzo",
+				"0jin0mp7d44m"
+			],
+			"total_supply" : 6284
+		},
+		"monero" : 
+		{
+			"circulating_supply" : 9073,
+			"cmc_rank" : 1359,
+			"date_added" : "2023-04-05T22:51:05.509Z",
+			"id" : 2147,
+			"is_active" : 835,
+			"is_fiat" : null,
+			"last_updated" : "2023-04-05T22:51:05.509Z",
+			"max_supply" : 9854,
+			"name" : "ebyhzwdejoe",
+			"num_market_pairs" : 8308,
+			"platform" : null,
+			"quote" : 
+			{
+				"USD" : 
+				{
+					"fully_diluted_market_cap" : 0.070753597580991867,
+					"last_updated" : "2023-04-05T22:51:05.509Z",
+					"market_cap" : 0.11884500743945647,
+					"market_cap_dominance" : 2409,
+					"percent_change_1h" : 0.37925521748178315,
+					"percent_change_24h" : 0.16753013603586298,
+					"percent_change_30d" : 0.99105180546926763,
+					"percent_change_7d" : 0.80380708268051415,
+					"price" : 0.46894118815520569,
+					"volume_24h" : 0.81533477616372663,
+					"volume_change_24h" : 0.90763774557836152
+				}
+			},
+			"self_reported_circulating_supply" : null,
+			"self_reported_market_cap" : null,
+			"slug" : "monero",
+			"symbol" : "4l2ls4g6ctv",
+			"tags" : 
+			[
+				"f3f2gb7u22",
+				"5l6n5vk0gfg",
+				"aebeyc9rio",
+				"guvqikui429",
+				"pjc54p1iugi",
+				"kpx6adhlwzh",
+				"ldzr71vpdcl",
+				"fp7x2rol9x7",
+				"t23s5z9pbc",
+				"hehobwgbi74"
+			],
+			"total_supply" : 5018
+		}
+	},
+	"status" : 
+	{
+		"credit_count" : 1,
+		"elapsed" : 0,
+		"error_code" : 0,
+		"error_message" : null,
+		"notice" : null,
+		"timestamp" : "2023-04-05T22:51:05.509Z"
+	}
+}

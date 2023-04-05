@@ -54,10 +54,17 @@ int main(int argc, char** argv){
     get_options(argc, argv, opt);
 
     string url = "https://sandbox-api.coinmarketcap.com";
-    string file_name = "test_output";
-    string api_key;
+
+
+    std::cout << "Provide file name for logging: ";
+    string file_name = "default_file_name";
+    cin >> file_name;
+    cout << "\n";
+
     std::cout << "Provide api key : ";
+    string api_key;
     cin >> api_key;
+    cout << "\n";
 
     reader read(opt);
     
@@ -67,7 +74,7 @@ int main(int argc, char** argv){
     input_opts loop_opt = input_opts::INFO;
 
     //timer_c loop_clock(opt.update_timeframe);
-    timer_c loop_clock(15);
+    timer_c loop_clock(opt.update_timeframe);
 
     try{
         COM curl_interface(url,file_name,api_key);
