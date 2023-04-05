@@ -54,7 +54,7 @@ int main(int argc, char** argv){
     get_options(argc, argv, opt);
 
     string url = "https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/listings/latest";
-    string file_name = "test_output.json";
+    string file_name = "test_output";
     
     reader read(opt);
     
@@ -66,20 +66,26 @@ int main(int argc, char** argv){
     //timer_c loop_clock(opt.update_timeframe);
     timer_c loop_clock(15);
 
-    while(loop_opt != input_opts::QUIT){
-        //current = std::async(read.read_message);
+    try{
+        COM curl_interface(url,file_name);
 
-        //if the current time is ready for a status update, then do the following loop
-        if(loop_clock.is_ready()){
-            try{
-                COM curl_interface(url,file_name );
-                curl_interface.send_msg();
-                loop_clock.reset_update();
+        while(loop_opt != input_opts::QUIT){
+            //current = std::async(read.read_message);
+
+            //if the current time is ready for a status update, then do the following loop
+            if(loop_clock.is_ready()){
+                try{
+                    curl_interface.send_msg();
+                    loop_clock.reset_update();
+                }
+                catch(curl_exception & e){
+                    std::cout << e.what();
+                }
             }
-            catch(curl_exception & e){
-                std::cout << e.what();
-            }
+            //loop_clock.print_diff();
         }
-        loop_clock.print_diff();
+    }
+    catch(curl_exception & e){
+                std::cout << e.what();
     }
 }

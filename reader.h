@@ -91,11 +91,10 @@ class reader{
         std::cout << "Updated time interval to update on to" <<  time_frame << "\n";
     }
 
-    
+
 
 
     bool is_verbose;
-    //string cur_input;
     user_opt & opt;
 
 };

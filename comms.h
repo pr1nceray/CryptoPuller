@@ -1,3 +1,4 @@
+#include <bits/types/FILE.h>
 #include <curl/curl.h>
 #include <curl/easy.h>
 #include <jsoncpp/json/json.h>
@@ -47,55 +48,54 @@ class COM{
     File handling is done in init_file().
     
     */
-    COM(string & url, string & file_name){
+    COM(string & url, string & file_name_in){
         curl_global_init(CURL_GLOBAL_ALL);
         curl = curl_easy_init();
-        (void)url;
-        (void)file_name;
-
-        
         if(!curl){ 
             curl_exception init_err("Error during curl initialization; curl not initialized");
             throw init_err;
             return;
         }
-        init_file(file_name);
         set_up_opts(url);
         set_header();
+        file_name = file_name_in;
     }
     ~COM(){
         curl_easy_cleanup(curl);
         curl_slist_free_all(list);
-        file.close();
     }
 
 
     void send_msg(){
         CURLcode code = curl_easy_perform(curl);
         if(code != CURLE_OK){
-            file << "Error getting info.";
+            cout << "Error getting info.";
+            return;
         }
         parse_json(buffer);
         buffer.clear();
+
+        ofstream file = init_file(file_name);
+        file << val.toStyledString();
+        file.close();
+
     }   
 
     private:
     CURL * curl = nullptr;
     curl_slist * list = nullptr;
-    ofstream file;
     string buffer = "";
     Json::Reader read;
     Json::Value val;
-
+    int file_name_offset = 0;
+    string file_name;
 
 
     void parse_json(string & buffer){
         bool is_parsed = read.parse(buffer,val);
         if(!is_parsed){
             throw curl_exception("Unable to turn get req into a string");
-            return;
         }
-        file << val.toStyledString();
     }
 
     void set_header(){ //needs more header data,.
@@ -119,14 +119,20 @@ class COM{
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str()); 
     }
 
-    void init_file(string & file_name){
-        file.open(file_name);
+    ofstream init_file(string & file_name){
+        string file_name_offseted = file_name + std::to_string(file_name_offset) + ".json";      
+
+        ofstream file;
+        file.open(file_name_offseted);
 
         if(!file.is_open()){
             string msg = "could not write to file : ";
             curl_exception file_err(msg.append(file_name));
             throw  curl_exception(msg.append(file_name));
         }
+
+        file_name_offset++;
+        return file;
     }
 
 
