@@ -48,7 +48,7 @@ class COM{
     File handling is done in init_file().
     
     */
-    COM(string & url, string & file_name_in){
+    COM(string & url, string & file_name_in, string & api_key_in){
         curl_global_init(CURL_GLOBAL_ALL);
         curl = curl_easy_init();
         if(!curl){ 
@@ -57,19 +57,53 @@ class COM{
             return;
         }
         set_up_opts(url);
-        set_header();
+        //should switch to member initialization list.
+        base_url = url;
         file_name = file_name_in;
+        api_key = api_key_in;
     }
+
     ~COM(){
         curl_easy_cleanup(curl);
-        curl_slist_free_all(list);
     }
 
 
-    void send_msg(){
+    //message with sandbox api key.
+    void send_test_msg(){
+        string next_url = base_url + "/v1/cryptocurrency/listings/latest";
+        curl_easy_setopt(curl, CURLOPT_URL, next_url.c_str()); 
+
+        curl_slist * list = nullptr;
+        set_test_header(list);
         CURLcode code = curl_easy_perform(curl);
+
         if(code != CURLE_OK){
             cout << "Error getting info.";
+            curl_slist_free_all(list);
+            return;
+        }
+
+        parse_json(buffer);
+        buffer.clear();
+
+        ofstream file = init_file(file_name);
+        file << val.toStyledString();
+        file.close();
+        //zero out and free slist after sending msg.
+        curl_slist_free_all(list);
+    }   
+
+    //grabs xmr
+    void send_msg(){
+        string next_url = base_url + "/v1/cryptocurrency/listings/latest";
+        curl_easy_setopt(curl, CURLOPT_URL,next_url.c_str()); 
+        curl_slist * list = nullptr;
+        set_test_header(list);
+        CURLcode code = curl_easy_perform(curl);
+
+        if(code != CURLE_OK){
+            cout << "Error getting info.";
+            curl_slist_free_all(list);
             return;
         }
         parse_json(buffer);
@@ -78,15 +112,21 @@ class COM{
         ofstream file = init_file(file_name);
         file << val.toStyledString();
         file.close();
-
-    }   
+        //zero out and free slist after sending msg.
+        curl_slist_free_all(list);
+    }
 
     private:
+    //curl vars
+    string base_url;
     CURL * curl = nullptr;
-    curl_slist * list = nullptr;
+    string api_key;
+    //variables for json reading
     string buffer = "";
     Json::Reader read;
     Json::Value val;
+
+    //variables for files
     int file_name_offset = 0;
     string file_name;
 
@@ -98,13 +138,12 @@ class COM{
         }
     }
 
-    void set_header(){ //needs more header data,.
+    void set_test_header(curl_slist * list){ //needs more header data,.
+        //need better error handling if append fails!
+        string api_key_temp = "X-CMC_PRO_API_KEY: " + api_key;
         list = curl_slist_append(list, "Accept: application/json");
-        if(list == nullptr){
-            throw curl_exception("Error during setting our header");
-            return;
-        }
-        list = curl_slist_append(list, "X-CMC_PRO_API_KEY: b54bcf4d-1bca-4e8e-9a24-22ff2c3d462c"); //sandbox key ;)
+        list = curl_slist_append(list, api_key_temp.c_str());
+
         if(list == nullptr){
             throw curl_exception("Error during setting our key");
             return;
@@ -112,11 +151,16 @@ class COM{
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER,list);
     }
 
+    void set_header(curl_slist * list){
+        list = curl_slist_append(list, "Accept: application/json");
+        list = curl_slist_append(list, "Accept-Encoding: deflate, gzip ");
+
+    }   
+
     void set_up_opts(string & url){
         curl_easy_setopt(curl,CURLOPT_VERBOSE,true);
         curl_easy_setopt(curl,CURLOPT_WRITEDATA,&buffer);  
         curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,write_file_class);  
-        curl_easy_setopt(curl, CURLOPT_URL, url.c_str()); 
     }
 
     ofstream init_file(string & file_name){
@@ -132,6 +176,8 @@ class COM{
         }
 
         file_name_offset++;
+        //this will overflow after it gets large enough, but i will deal with this when i get to it!
+
         return file;
     }
 

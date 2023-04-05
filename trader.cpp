@@ -53,9 +53,12 @@ int main(int argc, char** argv){
 
     get_options(argc, argv, opt);
 
-    string url = "https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/listings/latest";
+    string url = "https://sandbox-api.coinmarketcap.com";
     string file_name = "test_output";
-    
+    string api_key;
+    std::cout << "Provide api key : ";
+    cin >> api_key;
+
     reader read(opt);
     
 
@@ -67,7 +70,7 @@ int main(int argc, char** argv){
     timer_c loop_clock(15);
 
     try{
-        COM curl_interface(url,file_name);
+        COM curl_interface(url,file_name,api_key);
 
         while(loop_opt != input_opts::QUIT){
             //current = std::async(read.read_message);
@@ -75,7 +78,7 @@ int main(int argc, char** argv){
             //if the current time is ready for a status update, then do the following loop
             if(loop_clock.is_ready()){
                 try{
-                    curl_interface.send_msg();
+                    curl_interface.send_test_msg();
                     loop_clock.reset_update();
                 }
                 catch(curl_exception & e){
