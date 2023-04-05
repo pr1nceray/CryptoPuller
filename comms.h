@@ -82,6 +82,7 @@ class COM{
             curl_slist_free_all(list);
             return;
         }
+        curl_slist_free_all(list);
 
         parse_json(buffer);
         buffer.clear();
@@ -89,16 +90,12 @@ class COM{
         ofstream file = init_file(file_name);
         file << val.toStyledString();
         file.close();
-        //zero out and free slist after sending msg.
-        curl_slist_free_all(list);
     }   
 
     //grabs xmr
     void send_msg(){
-        string next_url = base_url + "/v1/cryptocurrency/listings/latest";
-        curl_easy_setopt(curl, CURLOPT_URL,next_url.c_str()); 
         curl_slist * list = nullptr;
-        set_test_header(list);
+        set_xmr(list);
         CURLcode code = curl_easy_perform(curl);
 
         if(code != CURLE_OK){
@@ -121,6 +118,7 @@ class COM{
     string base_url;
     CURL * curl = nullptr;
     string api_key;
+
     //variables for json reading
     string buffer = "";
     Json::Reader read;
@@ -151,10 +149,12 @@ class COM{
         curl_easy_setopt(curl, CURLOPT_HTTPHEADER,list);
     }
 
-    void set_header(curl_slist * list){
+    void set_xmr(curl_slist * list){
         list = curl_slist_append(list, "Accept: application/json");
         list = curl_slist_append(list, "Accept-Encoding: deflate, gzip ");
-
+        string next_url = base_url + "/v2/cryptocurrency/quotes/latest";
+        next_url += "/items?id=1";//get bitcoin got now!
+        curl_easy_setopt(curl, CURLOPT_URL,next_url.c_str()); 
     }   
 
     void set_up_opts(string & url){

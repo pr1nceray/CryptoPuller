@@ -78,7 +78,7 @@ int main(int argc, char** argv){
             //if the current time is ready for a status update, then do the following loop
             if(loop_clock.is_ready()){
                 try{
-                    curl_interface.send_test_msg();
+                    curl_interface.send_msg();
                     loop_clock.reset_update();
                 }
                 catch(curl_exception & e){
