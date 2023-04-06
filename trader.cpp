@@ -53,7 +53,7 @@ int main(int argc, char** argv){
 
     get_options(argc, argv, opt);
 
-    string url = "https://sandbox-api.coinmarketcap.com";
+    string url = "https://pro-api.coinmarketcap.com";
 
 
     std::cout << "Provide file name for logging: ";
