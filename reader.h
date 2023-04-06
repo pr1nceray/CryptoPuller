@@ -20,7 +20,7 @@ enum class input_opts{
 
 struct user_opt{
     bool is_verbose = false;
-    int update_timeframe = 60;
+    int update_timeframe = 129;
 
 };
 
